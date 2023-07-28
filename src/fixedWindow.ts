@@ -23,7 +23,7 @@ export class FixedWindowRatelimiter {
     const [[incrError, incrRes]] = (await this.#db
       .multi()
       .incr(redisKey)
-      .expire(redisKey, this.#window)
+      .expire(redisKey, this.#window, "NX")
       .exec())!;
 
     if (incrError) {

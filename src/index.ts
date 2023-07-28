@@ -6,15 +6,18 @@
 
 import { Redis } from "ioredis";
 import { FixedWindowRatelimiter } from "./fixedWindow";
+import { SlidingWindowRatelimiter } from "./slidingWindow";
 
 const redis = new Redis();
 
-const fixedRatelimiter = new FixedWindowRatelimiter(redis, 10, 3);
+const fixedRatelimiter = new SlidingWindowRatelimiter(redis, 10, 3);
 
 async function main() {
-  const { isRatelimitReached, totalRequst } = await fixedRatelimiter.check("1");
+  const { isRatelimitReached, totalRequest } = await fixedRatelimiter.check(
+    "1"
+  );
 
-  console.log({ isRatelimitReached, totalRequst });
+  console.log({ isRatelimitReached, totalRequest });
   process.exit(0);
 }
 
